@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer and Notification App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 5px;
+        }
+        #timer {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Timer and Notification App</h1>
+    
+    <h2>Countdown Timer</h2>
+    <input type="number" id="duration" placeholder="Enter duration in seconds">
+    <button onclick="startTimer()">Start Timer</button>
+    <div id="timer"></div>
+
+    <h2>Delayed Notification</h2>
+    <input type="number" id="delayTime" placeholder="Enter delay in milliseconds">
+    <input type="text" id="delayMessage" placeholder="Enter notification message">
+    <button onclick="startDelayedNotification()">Show Delayed Notification</button>
+
+    <h2>Repeated Notification</h2>
+    <input type="number" id="repeatInterval" placeholder="Enter interval in milliseconds">
+    <input type="text" id="repeatMessage" placeholder="Enter notification message">
+    <button onclick="startRepeatedNotification()">Start Repeated Notification</button>
+
+    <script>
+        let timerInterval;
+        let notificationInterval;
+
+        function startTimer() {
+            const durationInput = document.getElementById('duration');
+            let duration = parseInt(durationInput.value);
+            const timerDisplay = document.getElementById('timer');
+
+            clearInterval(timerInterval);
+
+            timerInterval = setInterval(() => {
+                if (duration <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Time's up!";
+                } else {
+                    timerDisplay.textContent = `Time remaining: ${duration} seconds`;
+                    duration--;
+                }
+            }, 1000);
+        }
+
+        function showDelayedNotification(message, delay) {
+            setTimeout(() => {
+                alert(message);
+            }, delay);
+        }
+
+        function startDelayedNotification() {
+            const delay = parseInt(document.getElementById('delayTime').value);
+            const message = document.getElementById('delayMessage').value;
+            showDelayedNotification(message, delay);
+        }
+
+        function startRepeatedNotification() {
+            const interval = parseInt(document.getElementById('repeatInterval').value);
+            const message = document.getElementById('repeatMessage').value;
+
+            clearInterval(notificationInterval);
+
+            notificationInterval = setInterval(() => {
+                if (confirm(message + "\n\nClick OK to dismiss or Cancel to continue notifications.")) {
+                    clearInterval(notificationInterval);
+                }
+            }, interval);
+        }
+    </script>
+</body>
+</html>
